@@ -1,0 +1,21 @@
+// Card. Minimal: no per-card blur, no heavy shadows.
+.card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.12s ease;
+}
+.card:hover { transform: translateY(-2px); }
+.card__cover { aspect-ratio: 2 / 3; object-fit: cover; width: 100%; }
+.card__title {
+  font-size: 0.85rem;
+  padding: 6px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: none; }
+  .card:hover { transform: none; }
+}

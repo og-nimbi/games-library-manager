@@ -1,0 +1,7 @@
+// Responsive grid for the cover library.
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--gap);
+  padding: var(--gap);
+}

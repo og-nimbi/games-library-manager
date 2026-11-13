@@ -1,0 +1,71 @@
+﻿{
+    "createHtmlIndex":  true,
+    "artwork":  {
+                    "cacheDir":  "_library\\artwork",
+                    "enabled":  true,
+                    "requestTimeoutSeconds":  15,
+                    "preferStoreArt":  true,
+                    "writeIcoIcons":  false
+                },
+    "providers":  {
+                      "legacyGames":  true,
+                      "epic":  true,
+                      "ea":  true,
+                      "steam":  true,
+                      "emulators":  true,
+                      "rockstar":  true,
+                      "gog":  true,
+                      "battleNet":  true,
+                      "hiRez":  true,
+                      "wargaming":  true,
+                      "itch":  true,
+                      "customLaunchers":  true,
+                      "riot":  true,
+                      "ubisoft":  true,
+                      "amazon":  true,
+                      "xbox":  true,
+                      "standalone":  true
+                  },
+    "metadata":  {
+                     "providers":  {
+                                       "vndb":  {
+                                                    "enabled":  false
+                                                }
+                                   },
+                     "enabled":  true
+                 },
+    "removeStaleShortcuts":  true,
+    "createFolderIcons":  true,
+    "customEntries":  {
+
+                      },
+    "customLaunchers":  {
+
+                        },
+    "libraryRoot":  "D:\\Games",
+    "customLaunchMethods":  {
+
+                            },
+    "gameOverrides":  {
+
+                      },
+    "scan":  {
+                 "standaloneSearchRoots":  [
+                                               "%ProgramFiles%",
+                                               "%ProgramFiles(x86)%",
+                                               "%LOCALAPPDATA%\\Programs"
+                                           ],
+                 "romDepth":  5,
+                 "romRoots":  {
+
+                              },
+                 "extraGameRoots":  {
+
+                                    },
+                 "deepDriveScan":  false,
+                 "standaloneDepth":  4,
+                 "emulatorRoots":  {
+
+                                   }
+             }
+}

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation
+    url: https://github.com/OWNER/REPO/tree/main/docs
+    about: Read the user and developer documentation.
+  - name: Security vulnerability
+    url: https://github.com/OWNER/REPO/security/advisories/new
+    about: Report a security issue privately (see SECURITY.md).

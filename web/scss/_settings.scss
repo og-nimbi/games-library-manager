@@ -1,0 +1,4 @@
+// Settings panel. Reuses .glass; only adds layout.
+.settings { padding: var(--gap); display: grid; gap: var(--gap); }
+.settings__row { display: flex; align-items: center; justify-content: space-between; gap: var(--gap); }
+.settings__label { color: var(--muted); font-size: 0.9rem; }
