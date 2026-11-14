@@ -41,3 +41,7 @@ desktop.ini
 *.suo
 bin/
 obj/
+
+# Local-only agent ecosystem
+.opencode/
+AGENTS.md
