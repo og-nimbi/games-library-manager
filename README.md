@@ -103,3 +103,18 @@ See [docs/user/metadata-and-api-keys.md](docs/user/metadata-and-api-keys.md).
 ## Status
 
 This repository contains the current C# desktop application under `app/` and supporting assets/configuration. Legacy scripts or prototypes may exist in the tree for historical reference, but they are not the supported runtime for the app described in this documentation.
+
+## Build & run
+
+**Prerequisites:** Windows 10/11, WebView2 Runtime, .NET Framework build tools (`csc.exe`), and the WebView2 SDK (path configured in `app/build.cmd`, default `D:\tools\WebView2SDK`).
+
+```cmd
+cd app
+build.cmd
+```
+
+```cmd
+.\GamesLibraryViewer.exe
+```
+
+The build creates/updates a desktop shortcut for easier access. For detailed build, configuration, and deployment notes, see [docs/developer/building.md](docs/developer/building.md).
