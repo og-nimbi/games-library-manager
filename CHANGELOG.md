@@ -7,6 +7,12 @@ and the project aims to follow [Semantic Versioning](https://semver.org/spec/v2.
 
 ## [Unreleased]
 
+_No unreleased changes yet._
+
+## [1.0.0] - 2026-11-14
+
+First official release of Games Library Manager as a native C# WinForms + WebView2 desktop application.
+
 ### Added
 - Native C# WinForms + WebView2 desktop application (`app/`) for scanning, browsing, and launching games.
 - Provider scanning for Steam, itch.io, and Epic Games.
@@ -17,7 +23,10 @@ and the project aims to follow [Semantic Versioning](https://semver.org/spec/v2.
 - In-app Settings page for secure API key storage (DPAPI), library options, shortcut folders, and manual launcher path overrides.
 - Dynamic settings rows for launcher executables and shortcut folders.
 - Optional native library folder/shortcut generation in the configured library root.
+- Scan result caching (`library-cache.json`) for fast launch, with in-app cache reset and repopulation.
+- Desktop shortcut creation during build for easier access.
 - Bundled configuration defaults in `config/settings.json` and persisted user settings in `%LOCALAPPDATA%\GamesLibraryManager\settings.json`.
+- Comprehensive user/developer documentation and repository health/policy files.
 
 ### Changed
 - Project direction moved from legacy script-based flows to a compiled C# desktop app as the primary/supported implementation.
