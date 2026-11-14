@@ -1,0 +1,69 @@
+# Template: provider module.
+# Copy to src/Providers/<Name>.ps1, replace Example, and delete these comments.
+# Keep the file ASCII-only and Windows PowerShell 5.1 compatible.
+
+function Get-<Name>LauncherPath {
+    $candidates = @(
+        '%ProgramFiles%\Example\example.exe',
+        '%LOCALAPPDATA%\Programs\Example\example.exe'
+    )
+
+    return Find-FirstExistingPath -Paths $candidates -PathType Leaf
+}
+
+function Get-<Name>GamesRoots {
+    param([string]$LauncherPath)
+
+    $roots = New-Object System.Collections.Generic.List[string]
+
+    # Prefer the real install record. A leftover folder with no record must not
+    # produce a provider folder.
+    foreach ($app in @(Get-InstalledApplications)) {
+        if ($app.DisplayName -notmatch '(?i)^Example') { continue }
+        if (!$app.InstallLocation) { continue }
+        if (!(Test-Path -LiteralPath $app.InstallLocation -PathType Container -ErrorAction SilentlyContinue)) { continue }
+        if (!($roots -contains $app.InstallLocation)) { $roots.Add($app.InstallLocation) }
+    }
+
+    return @(ConvertTo-Array $roots)
+}
+
+function Get-<Name>Provider {
+    param($Config)
+
+    $launcherPath = Get-<Name>LauncherPath
+    $games = New-Object System.Collections.Generic.List[object]
+    $seen = @{}
+
+    foreach ($root in @(Get-<Name>GamesRoots -LauncherPath $launcherPath)) {
+        foreach ($dir in @(Get-ChildItem -LiteralPath $root -Directory -ErrorAction SilentlyContinue)) {
+            $title = $dir.Name
+            $target = Find-GameExecutable -Directory $dir.FullName -Depth 3 -PreferName $title
+            if (!$target) {
+                Write-Log "<Name>: no launchable target for '$($dir.Name)'." -Level Debug
+                continue
+            }
+
+            $key = $dir.Name.ToLowerInvariant()
+            if ($seen.ContainsKey($key)) { continue }
+            $seen[$key] = $true
+
+            $games.Add((New-GameEntry -Name $title -Provider 'Example' -ProviderKey 'example' -Kind 'StoreGame' `
+                -Target $target -WorkingDirectory $dir.FullName -IconPath $target `
+                -InstallDir $dir.FullName -Source 'example-install'))
+        }
+    }
+
+    if ($games.Count -eq 0) {
+        Write-Log '<Name>: nothing found.' -Level Debug
+        return $null
+    }
+
+    $launcher = $null
+    if ($launcherPath) {
+        $launcher = New-GameEntry -Name 'Example' -Provider 'Providers' -ProviderKey 'provider' -Kind 'Provider' `
+            -Target $launcherPath -IconPath $launcherPath -Source 'example-launcher'
+    }
+
+    return New-ProviderResult -Key 'example' -DisplayName 'Example' -Launcher $launcher -Games $games -IconPath $launcherPath
+}

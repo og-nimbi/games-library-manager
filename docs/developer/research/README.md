@@ -1,53 +1,16 @@
-# Research log
+# Research Notes
 
-This directory holds modular, reusable research findings. Each note is a small
-Markdown file with frontmatter. Findings are referenced from user and developer
-docs instead of being duplicated.
+This directory contains exploratory and background research related to Games Library Manager.
 
-## How to add a research note
+Research documents are **informational** and may describe alternatives, prototypes, or historical investigations. They do not necessarily reflect the current supported implementation.
 
-1. Create `docs/developer/research/<topic>.md`.
-2. Use the frontmatter template below.
-3. Add an entry to `index.md`.
-4. Reference the note from the relevant user/developer doc with a relative link.
+## Current notes
 
-## Note template
+- [Node.js native GUI options](nodejs-native-gui.md) — comparison of desktop UI approaches in the Node.js ecosystem (historical/exploratory)
 
-```markdown
----
-topic: short-topic-slug
-date: YYYY-MM-DD
-status: draft | reviewed | superseded
-sources:
-  - https://example.com/page
-related:
-  - ../providers.md
-  - ../../user/artwork.md
----
+## Conventions for research docs
 
-# Title
-
-## Question
-
-What was investigated.
-
-## Findings
-
-Bullet points with evidence and links.
-
-## Conclusion
-
-What we decided and why.
-
-## References
-
-Links to sources.
-```
-
-## Rules
-
-- One topic per file. Keep files short.
-- Never duplicate a finding; link to the note instead.
-- Update `status` to `superseded` and link the replacement when a finding
-  becomes outdated.
-- Research notes are committed (they are not machine-specific).
+- Clearly label status (draft/final/superseded)
+- Include date and sources when applicable
+- Distinguish recommendations from decisions
+- Link to current developer docs when a topic becomes part of the supported architecture

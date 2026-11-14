@@ -1,33 +1,37 @@
 # Changelog
 
-All notable changes to Games Library Manager are documented in this file. The
-format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+All notable changes to this project should be documented in this file.
+
+The format is inspired by [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and the project aims to follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html) where applicable.
 
 ## [Unreleased]
 
 ### Added
-- Edge application-mode viewer launch (`-Open`) with app icon.
-- Cover-art grid viewer with search, provider chips, sort pills, detail sidebar,
-  per-game settings cog, and app settings modal.
-- Store-first artwork cache (Steam headers, itch covers) with `index.json`.
-- Metadata providers: Steam store (keyless), SteamGridDB, IGDB, VNDB.
-- DPAPI-backed secret store with `-SetSecret`, `-RemoveSecret`, `-ListSecrets`.
-- `-ApplySettings` and `-ApplyGameSettings` for merging config patches.
-- `-InitRoms` per-console ROM folder scaffolding.
-- `-RegisterProtocol` / `-UnregisterProtocol` / `-Launch` for `gameslibrary://`.
-- `.env` loading for development API keys.
-- Agent ecosystem under `agents/` and OpenCode wiring under `.opencode/`.
+- Native C# WinForms + WebView2 desktop application (`app/`) for scanning, browsing, and launching games.
+- Provider scanning for Steam, itch.io, and Epic Games.
+- Unified library UI with cover grid, search, provider filters, sorting, and metadata sidebar.
+- Launcher tiles to open installed storefront clients directly.
+- Artwork resolution and caching under the library `_library/artwork` directory.
+- Metadata enrichment pipeline combining provider data with IGDB, VNDB, and SteamGridDB (without overwriting provider-supplied fields).
+- In-app Settings page for secure API key storage (DPAPI), library options, shortcut folders, and manual launcher path overrides.
+- Dynamic settings rows for launcher executables and shortcut folders.
+- Optional native library folder/shortcut generation in the configured library root.
+- Bundled configuration defaults in `config/settings.json` and persisted user settings in `%LOCALAPPDATA%\GamesLibraryManager\settings.json`.
 
 ### Changed
-- itch.io icons now use the executable icon (extracted `.ico` colors were wrong).
-- Stale cleanup previews instead of deleting during dry runs.
-- Executable detection rejects runtime/engine helpers and prefers 64-bit builds.
+- Project direction moved from legacy script-based flows to a compiled C# desktop app as the primary/supported implementation.
+- Launcher section behavior clarified: storefront tiles launch clients; filter pills control library filtering.
 
 ### Fixed
-- Apostrophe normalization (`Sarada's Rise`).
-- Version regex no longer strips bare `V3`.
-- Trailing hyphens preserved (`LoveKami -Divinity Stage-`).
-- `-Only` accepts comma/semicolon-separated values and reports unknown providers.
-- Epic requires a real uninstall record.
-- Multi-file disc images counted once.
-- Ambiguous ROM extensions fall back to RetroArch.
+- itch.io launcher detection for versioned `app-*` installations and common locations.
+- Metadata parsing issues caused by JSON array handling, improving IGDB/VNDB enrichment reliability.
+- HTTP requests now use a standard browser user agent to reduce CDN/anti-bot blocking.
+- Library grid now renders automatically on initial load.
+
+### Security
+- API credentials stored encrypted for the current Windows user via DPAPI in `%LOCALAPPDATA%\GamesLibraryManager\secrets.dat`.
+
+## [0.1.0] - Historical
+
+Early repository iterations explored a PowerShell-based library builder and related experiments. Those implementations are considered legacy and are not the supported runtime for the current application.

@@ -1,0 +1,36 @@
+---
+name: skill-name
+description: One sentence describing when an agent should load this skill.
+---
+
+# Skill Title
+
+Use when the user asks for the specific outcome this skill produces.
+
+## Preconditions
+
+- What must already be true.
+- Which rules to read first.
+
+## Inputs
+
+- What to inspect or ask for before acting.
+
+## Steps
+
+1. First action.
+2. Second action.
+3. Verification action.
+
+## Verification
+
+Exact commands and expected output.
+
+## Failure modes
+
+- Symptom: cause and fix.
+- Symptom: cause and fix.
+
+## Done when
+
+A short, testable exit condition.

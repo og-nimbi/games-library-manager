@@ -6,7 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for reporting. Please fill in as much detail as you can.
+        Thanks for reporting. Please provide enough detail to reproduce the issue.
+        Do not include API keys, secrets, or other sensitive information.
   - type: textarea
     id: description
     attributes:
@@ -21,8 +22,9 @@ body:
       label: Steps to reproduce
       description: Minimal steps to reproduce the behavior.
       placeholder: |
-        1. Run ...
-        2. See ...
+        1. Launch GamesLibraryViewer.exe
+        2. Open ...
+        3. Click ...
     validations:
       required: true
   - type: textarea
@@ -45,30 +47,38 @@ body:
     validations:
       required: true
   - type: input
-    id: powershell
+    id: app_version
     attributes:
-      label: PowerShell version
-      description: Output of `$PSVersionTable.PSVersion`.
-      placeholder: "5.1.22621.1"
-    validations:
-      required: true
+      label: App version / build
+      description: Version, commit, or build date if known.
+      placeholder: "Unreleased / built 2026-11-14"
   - type: input
-    id: command
+    id: webview2
     attributes:
-      label: Command run
-      placeholder: "games-library.cmd -DryRun"
+      label: WebView2 runtime version
+      description: If known (Edge WebView2 Runtime version).
+      placeholder: "e.g. 131.x"
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment details
+      description: Library root, affected storefront(s), and relevant settings (no secrets/keys).
+      placeholder: |
+        Library root: D:\Games
+        Storefronts: Steam, itch.io
+        Launcher overrides: ...
   - type: textarea
     id: logs
     attributes:
-      label: Logs
-      description: Relevant output from `_library\\last-run.log` (remove secrets).
-      render: shell
+      label: Logs / diagnostics
+      description: Relevant output or error messages (e.g. crash.txt, UI errors). Remove secrets and personal data.
+      render: text
   - type: checkboxes
     id: terms
     attributes:
       label: Checklist
       options:
-        - label: I removed secrets and personal paths from the logs.
+        - label: I removed secrets, API keys, and personal data from all attachments/logs.
           required: true
         - label: I searched existing issues for duplicates.
           required: true

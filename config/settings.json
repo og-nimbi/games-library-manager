@@ -1,71 +1,95 @@
 ﻿{
-    "createHtmlIndex":  true,
+    "customLaunchMethods":  [
+
+                            ],
+    "gameOverrides":  [
+
+                      ],
+    "createFolderIcons":  true,
+    "customEntries":  [
+
+                      ],
+    "storefronts":  {
+
+                    },
+    "providers":  {
+                      "standalone":  true,
+                      "gog":  true,
+                      "xbox":  true,
+                      "legacyGames":  true,
+                      "ea":  true,
+                      "customLaunchers":  true,
+                      "battleNet":  true,
+                      "emulators":  true,
+                      "wargaming":  true,
+                      "steam":  true,
+                      "hiRez":  true,
+                      "itch":  true,
+                      "rockstar":  true,
+                      "amazon":  true,
+                      "ubisoft":  true,
+                      "epic":  true,
+                      "riot":  true
+                  },
     "artwork":  {
                     "cacheDir":  "_library\\artwork",
-                    "enabled":  true,
+                    "writeIcoIcons":  false,
                     "requestTimeoutSeconds":  15,
                     "preferStoreArt":  true,
-                    "writeIcoIcons":  false
+                    "enabled":  true
                 },
-    "providers":  {
-                      "legacyGames":  true,
-                      "epic":  true,
-                      "ea":  true,
-                      "steam":  true,
-                      "emulators":  true,
-                      "rockstar":  true,
-                      "gog":  true,
-                      "battleNet":  true,
-                      "hiRez":  true,
-                      "wargaming":  true,
-                      "itch":  true,
-                      "customLaunchers":  true,
-                      "riot":  true,
-                      "ubisoft":  true,
-                      "amazon":  true,
-                      "xbox":  true,
-                      "standalone":  true
-                  },
-    "metadata":  {
-                     "providers":  {
-                                       "vndb":  {
-                                                    "enabled":  false
-                                                }
-                                   },
-                     "enabled":  true
-                 },
-    "removeStaleShortcuts":  true,
-    "createFolderIcons":  true,
-    "customEntries":  {
-
-                      },
-    "customLaunchers":  {
-
-                        },
-    "libraryRoot":  "D:\\Games",
-    "customLaunchMethods":  {
-
-                            },
-    "gameOverrides":  {
-
-                      },
+    "createHtmlIndex":  true,
     "scan":  {
+                 "standaloneDepth":  4,
+                 "romRoots":  [
+
+                              ],
                  "standaloneSearchRoots":  [
                                                "%ProgramFiles%",
                                                "%ProgramFiles(x86)%",
                                                "%LOCALAPPDATA%\\Programs"
                                            ],
-                 "romDepth":  5,
-                 "romRoots":  {
+                 "shortcutFolders":  [
 
-                              },
-                 "extraGameRoots":  {
+                                     ],
+                 "emulatorRoots":  [
 
-                                    },
+                                   ],
                  "deepDriveScan":  false,
-                 "standaloneDepth":  4,
-                 "emulatorRoots":  {
+                 "extraGameRoots":  [
 
-                                   }
-             }
+                                    ],
+                 "romDepth":  5
+             },
+    "metadata":  {
+                     "providers":  {
+                                       "steamStore":  {
+                                                          "enabled":  true
+                                                      },
+                                       "vndb":  {
+                                                    "enabled":  false
+                                                },
+                                       "steamGridDb":  {
+                                                           "apiKey":  "{secret:steamgriddb}",
+                                                           "enabled":  false
+                                                       },
+                                       "igdb":  {
+                                                    "clientId":  "{secret:igdbClientId}",
+                                                    "clientSecret":  "{secret:igdbClientSecret}",
+                                                    "enabled":  false
+                                                }
+                                   },
+                     "enabled":  true
+                 },
+    "customLaunchers":  [
+
+                        ],
+    "createWindowsLibrary":  true,
+    "libraryRoot":  "D:\\Games",
+    "launchers":  {
+                      "steam":  "",
+                      "itch":  "",
+                      "epic":  ""
+                  },
+    "removeStaleShortcuts":  true
 }

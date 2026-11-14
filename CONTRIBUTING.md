@@ -1,32 +1,81 @@
-# Contributing
+# Contributing to Games Library Manager
 
-Contributions are welcome. Please follow these guidelines.
+Thanks for your interest in contributing. This document explains how to propose changes, report issues, and submit pull requests for the current C# desktop app.
 
-## Requirements
+## Project scope (current)
 
-- Windows with Windows PowerShell 5.1.
-- No new runtime dependencies. The tool must run with only built-in PowerShell.
+The supported application is the **C# WinForms + WebView2** desktop app in `app/`. Documentation and changes should target this implementation.
 
-## Development rules
+Legacy scripts/prototypes may exist in the repository for historical reference, but they are not the primary runtime and should not be extended unless a maintainer explicitly requests it.
 
-- `.ps1` sources must be ASCII-only.
-- Target Windows PowerShell 5.1 (no PowerShell 7 features).
-- Never install anything to `C:` by default.
-- Do not hard-code machine-specific paths; use environment variables or drive
-  enumeration.
-- Do not commit secrets, API keys, or personal paths.
-- Keep changes focused; do not refactor unrelated code.
+## Ways to contribute
 
-## Before submitting
+- **Report bugs** with clear reproduction steps and environment details
+- **Suggest features** with a concrete use case and proposed behavior
+- **Improve documentation** (user guides, developer docs, troubleshooting, screenshots/diagrams)
+- **Submit code changes** for fixes, performance, UX, or maintainability
 
-1. Parse-check all `.ps1` files.
-2. Run `.\games-library.cmd -DryRun` and confirm no new warnings.
-3. For output changes, run a real build and a rerun; the rerun must report
-   `0 stale item(s) removed`.
-4. Update `README.md` and the relevant docs for user-visible changes.
+Please search existing issues/discussions before opening a new one.
+
+## Before you start
+
+- Read [README.md](README.md), [docs/user/README.md](docs/user/README.md), and [docs/developer/README.md](docs/developer/README.md).
+- For larger changes, open an issue or proposal first to align on scope and approach.
+- Keep changes focused and avoid unrelated refactors in the same PR.
+
+## Development setup
+
+1. Use **Windows 10/11** with the **WebView2 Runtime** installed.
+2. Ensure the **.NET Framework C# compiler** (`csc.exe`) is available (commonly at `C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe`).
+3. Ensure the **WebView2 SDK** is available at the path expected by `app\build.cmd` (default: `D:\tools\WebView2SDK`) or update the build script locally for your environment (do not commit machine-specific paths).
+4. Build from `app\`:
+
+   ```cmd
+   cd app
+   build.cmd
+   ```
+
+See [docs/developer/building.md](docs/developer/building.md) for details.
+
+## Coding guidelines
+
+- **Match existing style and architecture** in `app/` (C# targeting the project’s current compiler/toolchain constraints).
+- Prefer **small, reviewable changes** with clear behavior.
+- **Do not add new runtime dependencies** or package managers unless discussed and approved.
+- **Do not commit secrets**, API keys, personal data, or machine-specific absolute paths.
+- Preserve user-visible behavior unless the change explicitly intends to modify it; update docs when behavior/config changes.
+- Handle failures safely: avoid destructive actions, avoid silent data loss, and provide actionable errors/logs where appropriate.
+
+## Testing and verification
+
+Before submitting a PR:
+
+- [ ] Build succeeds: `app\build.cmd`
+- [ ] App launches and the affected flow works (scan, browse, launch, settings, metadata/artwork, etc.)
+- [ ] No regressions in unrelated areas you touched
+- [ ] Documentation updated for user-facing or developer-facing changes
+
+Include manual test notes in the PR (what you ran, environment, and results).
 
 ## Pull requests
 
-- Use a clear title and describe what changed and why.
-- Reference any related issue.
-- Keep pull requests small and reviewable.
+- Use the PR template and complete the checklist.
+- Describe **what** changed and **why**.
+- Include screenshots/GIFs for UI changes when practical.
+- Keep commit history and diffs understandable (squash/rebase as requested by maintainers).
+
+## Issue reports
+
+- Use the YAML issue forms in `.github/ISSUE_TEMPLATE/`.
+- For bugs: include reproduction steps, expected vs actual behavior, Windows/WebView2/app version, and sanitized logs.
+- For security issues: follow [SECURITY.md](SECURITY.md) and **do not** report vulnerabilities publicly.
+
+## Documentation contributions
+
+- User docs live in `docs/user/`
+- Developer docs live in `docs/developer/`
+- Keep docs accurate to the current implementation, with examples and troubleshooting where helpful.
+
+## Code of Conduct
+
+By participating in this project, you agree to follow [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).

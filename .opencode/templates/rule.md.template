@@ -1,0 +1,25 @@
+# Rule Title
+
+One sentence stating the scope of this rule.
+
+## Rule
+
+State each constraint as a "must" or "must not". Be specific enough that two
+agents would make the same decision.
+
+## Why
+
+Explain the failure this rule prevents. Reference the real bug or requirement.
+
+## How to apply
+
+- Concrete step or check.
+- Concrete step or check.
+
+## Exceptions
+
+List any legitimate exception and who can approve it. If there are none, say so.
+
+## Verification
+
+Exact command or inspection that proves compliance.

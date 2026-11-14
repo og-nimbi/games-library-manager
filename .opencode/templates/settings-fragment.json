@@ -1,0 +1,15 @@
+{
+  "artwork": {
+    "enabled": true,
+    "preferStoreArt": true,
+    "writeIcoIcons": true,
+    "cacheDir": "_library/artwork",
+    "requestTimeoutSeconds": 15,
+    "providers": {
+      "steamWebApi": { "enabled": true, "apiKey": "{env:STEAM_API_KEY}" },
+      "steamGridDb": { "enabled": true, "apiKey": "{env:STEAMGRIDDB_API_KEY}" },
+      "igdb": { "enabled": false, "clientId": "", "clientSecret": "" },
+      "keyless": { "enabled": true }
+    }
+  }
+}

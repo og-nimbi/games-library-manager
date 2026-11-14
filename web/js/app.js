@@ -1,4 +1,4 @@
-// Viewer bootstrap. Hydrate entries into memory once; search/filter operate on
+﻿// Viewer bootstrap. Hydrate entries into memory once; search/filter operate on
 // the in-memory array. Covers come from the local cache (relative paths).
 (function () {
   "use strict";
@@ -15,7 +15,23 @@
 
   function launch(shortcut) {
     if (!shortcut) return;
+    const path = toWindowsPath(shortcut);
+    if (window.chrome && window.chrome.webview) {
+      try {
+        window.chrome.webview.postMessage(JSON.stringify({ action: "launch", path: path }));
+        return;
+      } catch (e) { }
+    }
     window.location.href = "gameslibrary://launch/" + encodeURIComponent(shortcut);
+  }
+
+  function toWindowsPath(p) {
+    if (!p) return "";
+    let path = String(p);
+    if (!/^[a-zA-Z]:/.test(path) && !path.startsWith("/") && window.GLM_LIBRARY_ROOT) {
+      path = window.GLM_LIBRARY_ROOT + "/" + path;
+    }
+    return path.replace(/\//g, "\\");
   }
 
   let currentSort = "name";
@@ -52,6 +68,17 @@
     }
     c.appendChild(el("div", "card__title", e.title || ""));
     if (e.provider) c.appendChild(el("div", "card__provider", e.provider));
+    const actions = el("div", "card__actions");
+    const playBtn = el("button", "play-btn", "Play");
+    const methods = Array.isArray(e.launchMethods) && e.launchMethods.length ? e.launchMethods : [{ name: "Play", shortcut: e.shortcut }];
+    const primary = methods[0];
+    playBtn.addEventListener("click", function (ev) { ev.stopPropagation(); launch(e.shortcut || primary.shortcut); });
+    actions.appendChild(playBtn);
+    const cogBtn = el("button", "cog-btn", "\u2699");
+    cogBtn.title = "Edit game settings";
+    cogBtn.addEventListener("click", function (ev) { ev.stopPropagation(); openModal(e); });
+    actions.appendChild(cogBtn);
+    c.appendChild(actions);
     c.addEventListener("click", function () { selectEntry(e); });
     return c;
   }
@@ -112,130 +139,86 @@
   }
 
   // Sidebar (always visible column)
-  const sidebarEmpty = document.getElementById("sidebar-empty");
-  const sidebarContent = document.getElementById("sidebar-content");
+  const sidebar = document.getElementById("sidebar");
   const sidebarHero = document.getElementById("sidebar-hero");
   const sidebarTitle = document.getElementById("sidebar-title");
   const sidebarMeta = document.getElementById("sidebar-meta");
-  const playBtn = document.getElementById("play-btn");
-  const launchMenu = document.getElementById("launch-menu");
-  const cogBtn = document.getElementById("cog-btn");
-  const appCog = document.getElementById("app-cog");
   const clearBtn = document.getElementById("clear-btn");
+  const appCog = document.getElementById("app-cog");
+  const appPage = document.getElementById("app-page");
+  const appClose = document.getElementById("app-close");
+  const appSave = document.getElementById("app-save");
 
   let current = null;
 
   function clearSelection() {
     current = null;
-    if (sidebarEmpty) sidebarEmpty.style.display = "";
-    if (sidebarContent) sidebarContent.classList.add("hidden");
+    if (sidebar) sidebar.classList.add("hidden");
   }
 
   function selectEntry(e) {
     current = e;
-    if (sidebarEmpty) sidebarEmpty.style.display = "none";
-    if (sidebarContent) sidebarContent.classList.remove("hidden");
+    if (sidebar) sidebar.classList.remove("hidden");
     if (sidebarHero) {
-      if (e.cover) { sidebarHero.src = e.cover; sidebarHero.style.display = ""; }
+      const heroSrc = e.hero || "";
+      if (heroSrc) { sidebarHero.src = heroSrc; sidebarHero.style.display = ""; }
       else { sidebarHero.removeAttribute("src"); sidebarHero.style.display = "none"; }
     }
     if (sidebarTitle) sidebarTitle.textContent = e.title || "";
     if (sidebarMeta) {
       sidebarMeta.innerHTML = "";
       const rows = [
-        ["Provider", e.provider],
-        ["Type", e.kind],
-        ["Source", e.source || e.provider]
+        ["Source", e.source || e.provider],
+        ["Rating", e.rating],
+        ["Publisher", e.publisher],
+        ["Developer", e.developer],
+        ["Year", e.year],
+        ["Genres", e.genres]
       ];
       for (let i = 0; i < rows.length; i++) {
-        sidebarMeta.appendChild(el("div", null, rows[i][0] + ": " + (rows[i][1] || "")));
+        if (!rows[i][1]) continue;
+        const div = el("div", "meta-row");
+        const label = el("span", "meta-label", rows[i][0]);
+        const value = el("span", "meta-value", rows[i][1]);
+        div.appendChild(label);
+        div.appendChild(value);
+        sidebarMeta.appendChild(div);
       }
     }
-    if (playBtn) {
-      const methods = Array.isArray(e.launchMethods) && e.launchMethods.length ? e.launchMethods : [{ name: "Play", shortcut: e.shortcut }];
-      const primary = methods[0];
-      playBtn.onclick = function () { launch(primary.shortcut); };
-      playBtn.textContent = "Play";
-      if (launchMenu) {
-        launchMenu.innerHTML = "";
-        const prev = playBtn.parentNode.querySelector(".launch-toggle");
-        if (prev) prev.remove();
-        if (methods.length > 1) {
-          const toggle = el("button", "launch-toggle", "\u25BE");
-          toggle.addEventListener("click", function (ev) {
-            ev.stopPropagation();
-            launchMenu.classList.toggle("hidden");
-          });
-          playBtn.parentNode.insertBefore(toggle, launchMenu);
-          methods.forEach(function (m) {
-            const b = el("button", null, m.name || "Launch");
-            b.addEventListener("click", function () { launch(m.shortcut); launchMenu.classList.add("hidden"); });
-            launchMenu.appendChild(b);
-          });
-        }
-      }
-    }
-  }
-
-  // Per-game settings modal (cog button).
-  const modal = document.getElementById("edit-modal");
-  const editTitle = document.getElementById("edit-title");
-  const editCover = document.getElementById("edit-cover");
-  const editHero = document.getElementById("edit-hero");
-  const editIcon = document.getElementById("edit-icon");
-  const editMethods = document.getElementById("edit-methods");
-  const editSave = document.getElementById("edit-save");
-  const editCancel = document.getElementById("edit-cancel");
-
-  function openModal(e) {
-    if (!modal || !e) return;
-    if (editTitle) editTitle.value = e.title || "";
-    if (editCover) editCover.value = e.cover || "";
-    if (editHero) editHero.value = e.hero || "";
-    if (editIcon) editIcon.value = e.icon || "";
-    if (editMethods) editMethods.value = JSON.stringify(e.launchMethods || [], null, 2);
-    modal.classList.remove("hidden");
-  }
-
-  if (cogBtn) cogBtn.addEventListener("click", function () { if (current) openModal(current); });
-
-  // App settings modal (app cog).
-  const appModal = document.getElementById("app-modal");
-  const appClose = document.getElementById("app-close");
-  const appSave = document.getElementById("app-save");
-  if (appCog && appModal) {
-    appCog.addEventListener("click", function () { appModal.classList.remove("hidden"); });
-  }
-  if (appClose && appModal) {
-    appClose.addEventListener("click", function () { appModal.classList.add("hidden"); });
-  }
-  if (appSave && appModal) {
-    appSave.addEventListener("click", function () {
-      const patch = {
-        metadata: {
-          enabled: true,
-          providers: {
-            steamStore: { enabled: !!document.getElementById("cfg-steamStore").checked },
-            steamGridDb: { enabled: !!document.getElementById("cfg-steamGridDb").checked },
-            igdb: { enabled: !!document.getElementById("cfg-igdb").checked },
-            vndb: { enabled: !!document.getElementById("cfg-vndb").checked }
-          }
-        }
-      };
-      const blob = new Blob([JSON.stringify(patch, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "settings-patch.json";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      appModal.classList.add("hidden");
-    });
   }
 
   if (clearBtn) clearBtn.addEventListener("click", clearSelection);
+
+  function showMain() {
+    if (appPage) appPage.classList.add("hidden");
+    document.querySelectorAll("header.bar, .layout, .providers").forEach(function (n) { if (n) n.style.display = ""; });
+  }
+  function showSettings() {
+    if (appPage) appPage.classList.remove("hidden");
+    document.querySelectorAll("header.bar, .layout, .providers").forEach(function (n) { if (n) n.style.display = "none"; });
+  }
+  if (appCog && appPage) appCog.addEventListener("click", showSettings);
+  if (appClose && appPage) appClose.addEventListener("click", showMain);
+
+  if (appSave && appPage) {
+    appSave.addEventListener("click", function () {
+      const pairs = [
+        ["steamApiKey", document.getElementById("sec-steamApiKey").value],
+        ["steam64Id", document.getElementById("sec-steam64Id").value],
+        ["steamgriddb", document.getElementById("sec-steamgriddb").value],
+        ["igdbClientId", document.getElementById("sec-igdbClientId").value],
+        ["igdbClientSecret", document.getElementById("sec-igdbClientSecret").value]
+      ];
+      if (window.chrome && window.chrome.webview) {
+        pairs.forEach(function (p) {
+          if (p[1]) {
+            window.chrome.webview.postMessage(JSON.stringify({ action: "setSecret", name: p[0], value: p[1] }));
+          }
+        });
+      }
+      showMain();
+    });
+  }
 
   // Clicking empty grid background clears selection.
   const grid = document.getElementById("grid");
@@ -276,10 +259,27 @@
 
   document.addEventListener("keydown", function (ev) {
     if (ev.key === "Escape") {
-      if (modal && !modal.classList.contains("hidden")) modal.classList.add("hidden");
-      else if (appModal && !appModal.classList.contains("hidden")) appModal.classList.add("hidden");
+      if (appPage && !appPage.classList.contains("hidden")) showSettings();
     }
   });
+
+  const foldersSave = document.getElementById("folders-save");
+  if (foldersSave) {
+    foldersSave.addEventListener("click", function () {
+      const text = document.getElementById("cfg-shortcutFolders").value;
+      const folders = text.split("\n").map(function (s) { return s.trim(); }).filter(Boolean);
+      const patch = { scan: { shortcutFolders: folders } };
+      const blob = new Blob([JSON.stringify(patch, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "shortcut-folders-patch.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
 
   render(entries);
 })();

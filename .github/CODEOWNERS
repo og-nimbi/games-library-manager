@@ -1,0 +1,22 @@
+# Default owners for repository paths.
+# Update handles/teams to match the actual repository maintainers.
+
+* @maintainers
+
+# Documentation
+/docs/ @maintainers
+README.md @maintainers
+CHANGELOG.md @maintainers
+ROADMAP.md @maintainers
+SECURITY.md @maintainers
+PRIVACY.md @maintainers
+TOS.md @maintainers
+CONTRIBUTING.md @maintainers
+CODE_OF_CONDUCT.md @maintainers
+SUPPORT.md @maintainers
+
+# Application source
+/app/ @maintainers
+/config/ @maintainers
+/web/ @maintainers
+/assets/ @maintainers

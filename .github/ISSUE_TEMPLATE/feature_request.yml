@@ -1,30 +1,39 @@
 name: Feature request
-description: Suggest an improvement
+description: Suggest an improvement for Games Library Manager
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the idea. Please describe the use case and proposed solution.
+        Thanks for the suggestion. Please describe the use case and proposed behavior.
   - type: textarea
-    id: summary
+    id: problem
     attributes:
-      label: Summary
-      description: What you want and why.
+      label: Problem / use case
+      description: What problem are you trying to solve?
     validations:
       required: true
   - type: textarea
-    id: solution
+    id: proposal
     attributes:
       label: Proposed solution
-      description: How you imagine it working.
+      description: How you would like this to work.
+    validations:
+      required: true
   - type: textarea
     id: alternatives
     attributes:
       label: Alternatives considered
+      description: Other approaches you considered, if any.
+  - type: textarea
+    id: scope
+    attributes:
+      label: Affected area
+      description: UI, scanning/providers, metadata/artwork, settings, launching, docs, etc.
+      placeholder: "e.g. Settings UI, itch.io provider"
   - type: textarea
     id: context
     attributes:
       label: Additional context
-      description: Screenshots, examples, or related issues.
+      description: Screenshots, mockups, examples, or related issues.

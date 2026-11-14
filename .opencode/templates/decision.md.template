@@ -1,0 +1,29 @@
+# Decision: Short title
+
+- Date: YYYY-MM-DD
+- Status: proposed | accepted | superseded by ADR-XXXX
+- Area: core | providers | emulators | titles | artwork | ui
+
+## Context
+
+What situation forced a choice? Include the constraints that actually applied.
+
+## Options considered
+
+1. Option A: what it buys and what it costs.
+2. Option B: what it buys and what it costs.
+3. Option C: what it buys and what it costs.
+
+## Decision
+
+State the chosen option in one sentence.
+
+## Consequences
+
+- Positive:
+- Negative:
+- Follow-up:
+
+## Evidence
+
+Link the file, command, or run that proves the choice works.
